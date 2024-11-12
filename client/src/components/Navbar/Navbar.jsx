@@ -6,9 +6,12 @@ import "./Navbar.css";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Home");
 
+
   const handelActiveStatus = (e) => {
     setMenu(e.target.textContent);
   };
+
+
 
   return (
     <div className="navbar">
