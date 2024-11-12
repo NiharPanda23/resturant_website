@@ -4,6 +4,8 @@ import { StoreContext } from "../../context/StoreContext";
 import "./Cart.css";
 import { assets } from "../../assets/assets";
 
+const deliveryCharge = Math.floor(Math.random(10) * 100)
+
 const Cart = () => {
   const { cartItems, food_list, removeFromCart, getTotalCartAmount } = useContext(StoreContext);
 
@@ -54,12 +56,12 @@ const Cart = () => {
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>₹ {50}</p>
+              <p>₹ {getTotalCartAmount()=== 0 ? 0 :  deliveryCharge}</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <b>Total</b>
-              <b>₹ {getTotalCartAmount()+50}</b>
+              <b>₹ {getTotalCartAmount()=== 0 ? 0 : getTotalCartAmount()+50}</b>
             </div>
           </div>
           <button>Proceed To Checkout</button>
