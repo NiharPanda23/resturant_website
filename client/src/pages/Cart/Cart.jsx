@@ -1,13 +1,25 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../context/StoreContext";
-
+import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 import { assets } from "../../assets/assets";
 
-const deliveryCharge = Math.floor(Math.random(10) * 100)
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount } = useContext(StoreContext);
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount } =
+    useContext(StoreContext);
+
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getTotalCartAmount()
+    setDeliveryCharge(Math.floor(Math.random(10) * 100))
+  },[getTotalCartAmount])
+  
+  const handleProceedToCheckout = () => {
+    navigate("/order", { state: { deliveryCharge } });
+  }
 
   return (
     <div className="cart">
@@ -56,15 +68,17 @@ const Cart = () => {
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>₹ {getTotalCartAmount()=== 0 ? 0 :  deliveryCharge}</p>
+              <p>₹ {getTotalCartAmount() === 0 ? 0 : deliveryCharge && getTotalCartAmount() >= 500 ? "Free"  : deliveryCharge}</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <b>Total</b>
-              <b>₹ {getTotalCartAmount()=== 0 ? 0 : getTotalCartAmount()+50}</b>
+              <b>
+                ₹ {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + deliveryCharge}
+              </b>
             </div>
           </div>
-          <button>Proceed To Checkout</button>
+          <button onClick={handleProceedToCheckout }>Proceed To Checkout</button>
         </div>
         <div className="promocode">
           <div>
