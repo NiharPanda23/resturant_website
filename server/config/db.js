@@ -8,7 +8,6 @@ const db = process.env.DB_NAME;
 const connectDb = async () => {
     try {
         await mongoose.connect(`mongodb+srv://${id}:${password}@cluster0.55gey.mongodb.net/${db}?retryWrites=true&w=majority`);
-        console.log("Database connected successfully");
     } catch (error) {
         console.log("Connection error:", error);
     }
