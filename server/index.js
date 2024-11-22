@@ -18,6 +18,3 @@ app.get("/", (req, res) => {
 
 app.listen(3000, () => console.log("Listing on port 3000"));
 
-// nihar12318 id
-// DuXzrBQzsoZwNs9p
-//mongodb+srv://nihar12318:<db_password>@cluster0.55gey.mongodb.net/?
