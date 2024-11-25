@@ -2,7 +2,7 @@ const express = require("express");
 const { addFood, listFood, removeFood} = require("../controllers/foodController");
 const multer = require("multer");
 
-const foodRouter = express.Router();
+const foodRouter = express();
 
 const storage = multer.diskStorage({
   destination: "uploads",
