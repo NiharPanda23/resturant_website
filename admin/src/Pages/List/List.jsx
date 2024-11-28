@@ -5,12 +5,12 @@ import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom"
 import "./List.css";
 
-const List = () => {
+const List = ({url}) => {
   const [list, setList] = useState([]);
 
   const allFood = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/food/list`);
+      const response = await axios.get(`${url}/api/food/list`);
       if (response.data) {
         setList(response.data);
         // console.log(response.data);
@@ -22,7 +22,7 @@ const List = () => {
 
   const removeFood = async (foodId) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/api/food/remove`, {
+      const response = await axios.delete(`${url}/api/food/remove`, {
         data: { id: foodId },
       });
       if (response.data.success === true) {

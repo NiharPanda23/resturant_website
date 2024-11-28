@@ -6,6 +6,10 @@ require("dotenv").config();
 
 const secret = process.env.JWT_SECRET;
 
+const createToken = (id) => {
+  return jwt.sign({ id }, secret);
+};
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -30,9 +34,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-const createToken = (id) => {
-  return jwt.sign({ id }, secret);
-};
 
 const signupUser = async (req, res) => {
   const { name, email, password } = req.body;
