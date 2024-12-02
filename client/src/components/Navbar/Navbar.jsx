@@ -71,7 +71,7 @@ const Navbar = ({ setShowLogin }) => {
         <input
           onClick={() => setShowLogin((prev) => !prev)}
           type="button"
-          value="Sign in"
+          value="Sign Up"
         />
       </div>
     </div>
