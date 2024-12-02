@@ -21,23 +21,28 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onLogin = async (e) => {
     e.preventDefault();
-    let newUrl = url;
-    if (current === "Sign Up") {
-      newUrl += `/api/user/signup`;
-    } else {
-      newUrl += `/api/user/login`;
+
+    if (!data.email || !data.password || (current === "Sign Up" && !data.name)) {
+      alert("Please fill in all required fields.");
+      return;
     }
 
-    const response = await axios.post(newUrl, data);
-    console.log(response.data);
-    
+    try {
+      const endpoint = current === "Sign Up" ? "signup" : "login";
+      const response = await axios.post(`${url}/api/user/${endpoint}`, data);
 
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
-    } else {
-      alert(response.data.message);
+      console.log(response.data); 
+
+      if (response.data.success) {
+        setToken(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        setShowLogin(false);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error during authentication:", error);
+      alert("Something went wrong. Please try again later.");
     }
   };
 
