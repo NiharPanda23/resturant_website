@@ -17,13 +17,13 @@ const Header = () => {
       background: `${assets.header_img2}`,
       title: "Get Fast Delivery Right Here",
       description:
-        "Experience the convenience of quick delivery with your favorite meals arriving fresh at your doorstep. Order now and savor the taste of happiness!",
+        "Experience the convenience of quick delivery with your favorite meals arriving fresh at your doorstep. Whether you're in the mood for comfort food, healthy options, or a sweet treat, our platform ensures you can order anything you desire.",
     },
     {
       background: `${assets.header_img3}`,
       title: "Explore A Variety of Choices",
       description:
-        "From snacks to comfort food, explore countless options tailored to your cravings. Your next meal is just a click away!",
+      "From snacks to comfort food, explore countless options tailored to your cravings. Our platform provides a broad selection of dishes that cater to every taste and dietary need.",
     },
   ];
 
