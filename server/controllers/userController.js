@@ -37,41 +37,48 @@ const loginUser = async (req, res) => {
 
 const signupUser = async (req, res) => {
   const { name, email, password } = req.body;
-  try {
-    // checks user exists or not
-    const exists = await userModel.find({ email });
 
-    if (exists) {
-      return res.json({ success: false, message: "User already exists" });
+  try {
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
-    // checks email format and password strength
+
+    const exists = await userModel.findOne({ email });
+    if (exists) {
+      return res.status(409).json({ success: false, message: "User already exists" });
+    }
+
     if (!validator.isEmail(email)) {
-      return res.json({ success: false, message: "Enter a valid email" });
+      return res.status(400).json({ success: false, message: "Enter a valid email" });
     }
 
     if (password.length < 6) {
-      return res.json({
+      return res.status(400).json({
         success: false,
-        message: "Password must be more than 6 letter",
+        message: "Password must be more than 6 characters",
       });
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = new userModel({
-      name: name,
-      email: email,
+      name,
+      email,
       password: hashedPassword,
     });
 
     const user = await newUser.save();
     const token = createToken(user._id);
-    res.status(200).json({ success: true, token});
+
+    res.status(201).json({ success: true, token });
   } catch (err) {
-    console.log(err);
-    res.status(404).json({ success: false, message: err.message });
+    console.error(err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+
 
 // const deleAccount = async (req, res) =>{
 
