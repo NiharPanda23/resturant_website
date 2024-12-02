@@ -4,6 +4,13 @@ import logo from './logo.png'
 import header_img1 from './header_img1.png'
 import header_img2 from './header_img2.png'
 import header_img3 from './header_img3.png'
+import header_img4 from './header_img4.png'
+import header_img5 from './header_img5.png'
+import header_img6 from './header_img6.png'
+import header_img7 from './header_img7.png'
+import header_img8 from './header_img8.png'
+import header_img9 from './header_img9.png'
+import header_img10 from './header_img10.png'
 import search_icon from './search_icon.png'
 import menu_1 from './menu_1.png'
 import menu_2 from './menu_2.png'
@@ -70,6 +77,13 @@ export const assets = {
     header_img1,
     header_img2,
     header_img3,
+    header_img4,
+    header_img5,
+    header_img6,
+    header_img7,
+    header_img8,
+    header_img9,
+    header_img10,
     search_icon,
     rating_starts,
     add_icon_green,
