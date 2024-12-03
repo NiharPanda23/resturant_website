@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Header.css";
 import { assets } from "../../assets/assets";
-import { title } from "process";
 
 const Header = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -87,6 +86,7 @@ const Header = () => {
         backgroundImage: `url(${slides[currentSlide].background})`,
         opacity: loading ? 0 : 1,
         transition: "opacity 0.5s ease",
+        borderRadius:"15px",
       }}
     >
       <div className="header-content">

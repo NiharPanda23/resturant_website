@@ -15,7 +15,7 @@ const FoodDisplay = ({category}) => {
         {
           food_list.map((food, index)=>{
             if (category === "All" || category === food.category) {
-              return <FoodItem key={index} id={food._id} name={food.name} description={food.description} price={food.price} image={food.image}/>
+              return <FoodItem key={index} id={food._id} name={food.name} description={food.description} price={food.price} image={`http://localhost:3000/images/`+food.image}/>
             }
           })
         }

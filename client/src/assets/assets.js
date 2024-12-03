@@ -66,9 +66,14 @@ import cross_icon from './cross_icon.png'
 import selector_icon from './selector_icon.png'
 import rating_starts from './rating_starts.png'
 import profile_icon from './profile_icon.png'
+import profile_edit from './person_edit.png'
+import profile_dark_icon from './dark_mode.png'
 import bag_icon from './bag_icon.png'
 import logout_icon from './logout_icon.png'
 import parcel_icon from './parcel_icon.png'
+import favorite_logo from './favorite_logo.png'
+import profile_light_icon from './light_mode.png'
+import membership from './loyalty_membership.png'
 
 export const assets = {
     logo,
@@ -85,6 +90,7 @@ export const assets = {
     header_img9,
     header_img10,
     search_icon,
+    favorite_logo,
     rating_starts,
     add_icon_green,
     add_icon_white,
@@ -99,7 +105,11 @@ export const assets = {
     profile_icon,
     logout_icon,
     bag_icon,
-    parcel_icon
+    profile_dark_icon,
+    profile_light_icon,
+    profile_edit,
+    parcel_icon,
+    membership
 }
 
 export const menu_list = [

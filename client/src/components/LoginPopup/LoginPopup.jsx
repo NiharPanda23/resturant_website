@@ -31,7 +31,7 @@ const LoginPopup = ({ setShowLogin }) => {
       const endpoint = current === "Sign Up" ? "signup" : "login";
       const response = await axios.post(`${url}/api/user/${endpoint}`, data);
 
-      console.log(response.data); 
+      // console.log(response.data); 
 
       if (response.data.success) {
         setToken(response.data.token);
