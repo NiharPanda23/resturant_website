@@ -6,7 +6,7 @@ import './FoodDisplay.css';
 
 const FoodDisplay = ({category}) => {
 
-  const {food_list} = useContext(StoreContext)
+  const {food_list, url} = useContext(StoreContext)
 
   return (
     <div className='food-list' id='food-list'>
@@ -15,7 +15,7 @@ const FoodDisplay = ({category}) => {
         {
           food_list.map((food, index)=>{
             if (category === "All" || category === food.category) {
-              return <FoodItem key={index} id={food._id} name={food.name} description={food.description} price={food.price} image={`http://localhost:3000/images/`+food.image}/>
+              return <FoodItem key={index} id={food._id} name={food.name} description={food.description} price={food.price} image={`${url}/images/`+food.image}/>
             }
           })
         }

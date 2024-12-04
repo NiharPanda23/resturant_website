@@ -4,22 +4,22 @@ import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 import { assets } from "../../assets/assets";
 
-
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount } =
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } =
     useContext(StoreContext);
 
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getTotalCartAmount()
-    setDeliveryCharge(Math.floor(Math.random(10) * 100))
-  },[getTotalCartAmount])
-  
+    getTotalCartAmount();
+    const randomCharge = Math.floor(Math.random() * 91) + 10; 
+    setDeliveryCharge(randomCharge);
+  }, []);
+
   const handleProceedToCheckout = () => {
     navigate("/order", { state: { deliveryCharge } });
-  }
+  };
 
   return (
     <div className="cart">
@@ -39,7 +39,7 @@ const Cart = () => {
             return (
               <div key={i}>
                 <div className="cart-items-title cart-items-item">
-                  <img src={food.image} alt="food image" />
+                  <img src={`${url}/images/` + food.image} alt="food image" />
                   <p>{food.name}</p>
                   <p>₹ {food.price}</p>
                   <p>{cartItems[food._id]}</p>
@@ -68,7 +68,9 @@ const Cart = () => {
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>₹ {getTotalCartAmount() === 0 ? 0 : deliveryCharge && getTotalCartAmount() >= 500 ? "Free"  : deliveryCharge}</p>
+              <p>
+                ₹ {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() >= 500 ? "Free" : deliveryCharge}
+              </p>
             </div>
             <hr />
             <div className="cart-total-details">
@@ -78,11 +80,11 @@ const Cart = () => {
               </b>
             </div>
           </div>
-          <button onClick={handleProceedToCheckout }>Proceed To Checkout</button>
+          <button onClick={handleProceedToCheckout}>Proceed To Checkout</button>
         </div>
         <div className="promocode">
           <div>
-            <p>If u have a promo code, Enter it here</p>
+            <p>If you have a promo code, enter it here</p>
             <div className="cart_promocode-input">
               <input type="text" placeholder="Coupon code" />
               <button>Submit</button>

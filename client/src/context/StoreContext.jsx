@@ -34,18 +34,21 @@ const storeContextProvider = (props) => {
     return totalAmount;
   };
 
-  const fetchFoodList = async () => {
+  const fetchFood = async () => {
     const response = await axios.get(`${url}/api/food/list`);
     setFood_list(response.data)
     
   }
 
-  fetchFoodList();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
+    const loadData = async() => {
+      await fetchFood();
+      if (localStorage.getItem("token")) {
+        setToken(localStorage.getItem("token"));
+      }
     }
+    loadData()
   }, [token]);
 
   const contextValue = {
