@@ -3,6 +3,7 @@ const cors = require("cors");
 const connectDb = require("./config/db");
 const foodRouter = require("./routes/foodRoute");
 const userRouter = require("./routes/userRouter");
+const cartRouter = require("./routes/cartRouter");
 require("dotenv").config();
 const app = express();
 
@@ -13,6 +14,7 @@ connectDb();
 app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
+app.use("/api/cart", cartRouter);
 
 app.get("/", (req, res) => {
   res.send("Hi there");
