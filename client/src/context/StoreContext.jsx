@@ -1,25 +1,37 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios"
+import axios from "axios";
 
 export const StoreContext = createContext(null);
 
-const storeContextProvider = (props) => {
+const StoreContextProvider = (props) => { // Correct naming
   const url = "http://localhost:3000";
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
-  const [food_list, setFood_list] = useState([])
+  const [food_list, setFood_list] = useState([]);
 
-
-  const addToCart = (itemId) => {
+  const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
     } else {
       setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
+    if (token) {
+      await axios.post(
+        `${url}/api/cart/add`,
+        { itemId },
+        { headers: { token } }
+      );
+    }
   };
 
-  const removeFromCart = (itemId) => {
+  const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    if (token) {
+      await axios.delete(`${url}/api/cart/remove`, {
+        data: { itemId },
+        headers: { token },
+      });
+    }
   };
 
   const getTotalCartAmount = () => {
@@ -36,20 +48,26 @@ const storeContextProvider = (props) => {
 
   const fetchFood = async () => {
     const response = await axios.get(`${url}/api/food/list`);
-    setFood_list(response.data)
-    
-  }
+    setFood_list(response.data);
+  };
 
+  const loadCartData = async (token) => {
+    const response = await axios.get(`${url}/api/cart/list`, {
+      headers: { token },
+    });
+    setCartItems(response.data.cartData);
+  };
 
   useEffect(() => {
-    const loadData = async() => {
+    const loadData = async () => {
       await fetchFood();
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
+        await loadCartData(localStorage.getItem("token"));
       }
-    }
-    loadData()
-  }, [token]);
+    };
+    loadData();
+  }, []);
 
   const contextValue = {
     url,
@@ -62,10 +80,12 @@ const storeContextProvider = (props) => {
     token,
     setToken,
   };
+
   return (
     <StoreContext.Provider value={contextValue}>
       {props.children}
     </StoreContext.Provider>
   );
 };
-export default storeContextProvider;
+
+export default StoreContextProvider;
