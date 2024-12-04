@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import "./List.css";
 
-const List = ({url}) => {
+const List = ({ url }) => {
   const [list, setList] = useState([]);
 
   const allFood = async () => {
@@ -26,7 +26,7 @@ const List = ({url}) => {
         data: { id: foodId },
       });
       if (response.data.success === true) {
-        setList((prev)=> prev.filter((food) => food._id !== foodId))
+        setList((prev) => prev.filter((food) => food._id !== foodId));
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
@@ -62,10 +62,16 @@ const List = ({url}) => {
               <p>{food.category}</p>
               <p>{food.price}</p>
               <div className="action">
-                <Link to='/add' className="link-reset">
+                <Link to="/add" className="link-reset">
                   <img className="add-img" src={assets.Add} alt="Add" />
                 </Link>
-                <img src={assets.update} alt="update" className="action-img" />
+                <Link to="/update" className="link-reset">
+                  <img
+                    src={assets.update}
+                    alt="update"
+                    className="action-img"
+                  />
+                </Link>
                 <img
                   onClick={() => removeFood(food._id)}
                   src={assets.deleteButton}
