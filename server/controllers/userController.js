@@ -2,7 +2,6 @@ const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-require("dotenv").config();
 
 const secret = process.env.JWT_SECRET;
 
@@ -16,40 +15,51 @@ const loginUser = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(404).json({success: false, message: "Incorrect Password Please try again"});
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message: "Incorrect Password Please try again",
+        });
     }
 
     const token = createToken(user._id);
-    res.json({success: true, token})
-
+    res.json({ success: true, token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-
 const signupUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
     if (!name || !email || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
 
     const exists = await userModel.findOne({ email });
     if (exists) {
-      return res.status(409).json({ success: false, message: "User already exists" });
+      return res
+        .status(409)
+        .json({ success: false, message: "User already exists" });
     }
 
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Enter a valid email" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Enter a valid email" });
     }
 
     if (password.length < 6) {
@@ -77,8 +87,6 @@ const signupUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
-
 
 // const deleAccount = async (req, res) =>{
 
