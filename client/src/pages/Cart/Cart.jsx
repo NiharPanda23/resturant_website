@@ -15,7 +15,7 @@ const Cart = () => {
     getTotalCartAmount();
     const randomCharge = Math.floor(Math.random() * 91) + 10; 
     setDeliveryCharge(randomCharge);
-  }, []);
+  },[]);
 
   const handleProceedToCheckout = () => {
     navigate("/order", { state: { deliveryCharge } });
@@ -69,14 +69,14 @@ const Cart = () => {
             <div className="cart-total-details">
               <p>Delivery Fee</p>
               <p>
-                ₹ {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() >= 500 ? "Free" : deliveryCharge}
+                ₹ {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() > 0 && getTotalCartAmount() < 500 ? deliveryCharge : "Free"}
               </p>
             </div>
             <hr />
             <div className="cart-total-details">
               <b>Total</b>
               <b>
-                ₹ {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + deliveryCharge}
+                ₹ {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() > 0 && getTotalCartAmount() < 500 ? getTotalCartAmount() + deliveryCharge : getTotalCartAmount()}
               </b>
             </div>
           </div>

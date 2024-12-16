@@ -3,70 +3,111 @@ import axios from "axios";
 
 export const StoreContext = createContext(null);
 
-const StoreContextProvider = (props) => { // Correct naming
+const StoreContextProvider = (props) => {
   const url = "http://localhost:3000";
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [food_list, setFood_list] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const addToCart = async (itemId) => {
-    if (!cartItems[itemId]) {
-      setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
-    } else {
-      setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    }
-    if (token) {
-      await axios.post(
-        `${url}/api/cart/add`,
-        { itemId },
-        { headers: { token } }
-      );
+    try {
+      if (!cartItems[itemId]) {
+        setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
+      } else {
+        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+      }
+
+      if (token) {
+        await axios.post(
+          `${url}/api/cart/add`,
+          { itemId },
+          { headers: { token } }
+        );
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
     }
   };
 
   const removeFromCart = async (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    if (token) {
-      await axios.delete(`${url}/api/cart/remove`, {
-        data: { itemId },
-        headers: { token },
-      });
+    try {
+      if (cartItems[itemId] > 1) {
+        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+      } else {
+        const updatedCart = { ...cartItems };
+        delete updatedCart[itemId];
+        setCartItems(updatedCart);
+      }
+
+      if (token) {
+        await axios.delete(`${url}/api/cart/remove`, {
+          data: { itemId },
+          headers: { token },
+        });
+      }
+    } catch (error) {
+      console.error("Error removing from cart:", error);
     }
   };
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
 
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = food_list.find((product) => product._id === item);
-        totalAmount += itemInfo.price * cartItems[item];
+    for (const itemId in cartItems) {
+      const quantity = cartItems[itemId];
+      if (quantity > 0) {
+        const itemInfo = food_list.find((product) => product._id === itemId);
+        if (itemInfo) {
+          totalAmount += itemInfo.price * quantity;
+        }
       }
     }
     return totalAmount;
   };
 
   const fetchFood = async () => {
-    const response = await axios.get(`${url}/api/food/list`);
-    setFood_list(response.data);
+    try {
+      const response = await axios.get(`${url}/api/food/list`);
+      setFood_list(response.data);
+    } catch (error) {
+      console.error("Error fetching food data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const loadCartData = async (token) => {
-    const response = await axios.get(`${url}/api/cart/list`, {
-      headers: { token },
-    });
-    setCartItems(response.data.cartData);
+  const loadCartData = async (userToken) => {
+    try {
+      const response = await axios.get(`${url}/api/cart/list`, {
+        headers: { token: userToken },
+      });
+      setCartItems(response.data.cartData);
+    } catch (error) {
+      console.error("Error loading cart data:", error);
+    }
   };
 
   useEffect(() => {
-    const loadData = async () => {
-      await fetchFood();
-      if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
-        await loadCartData(localStorage.getItem("token"));
+    const initializeData = async () => {
+      setIsLoading(true);
+
+      try {
+        await fetchFood();
+
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+          setToken(storedToken);
+          await loadCartData(storedToken);
+        }
+      } catch (error) {
+        console.error("Error initializing data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    loadData();
+
+    initializeData();
   }, []);
 
   const contextValue = {
@@ -79,6 +120,7 @@ const StoreContextProvider = (props) => { // Correct naming
     getTotalCartAmount,
     token,
     setToken,
+    isLoading,
   };
 
   return (
