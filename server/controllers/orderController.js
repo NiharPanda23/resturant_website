@@ -5,8 +5,7 @@ const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const placeOrder = async (req, res) => {
-
-  const frontend_url = "http://localhost:5173"
+  const frontend_url = "http://localhost:5173";
 
   const { userId, items, amount, address, deliveryCharge } = req.body;
 
@@ -16,44 +15,69 @@ const placeOrder = async (req, res) => {
       items: items,
       amount: amount,
       address: address,
-    })
+    });
     await newOrder.save();
-    await userModel.findByIdAndUpdate(req.body.userId, {cartData:{}});
+    await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
 
-    const line_items =  req.body.items.map((item)=>({
-      price_data:{
-        currency:"inr",
-        product_data:{
-            name:item.name
+    const line_items = req.body.items.map((item) => ({
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: item.name,
         },
-        unit_amount: Math.round(item.price * 100)
+        unit_amount: Math.round(item.price * 100),
       },
-      quantity: item.quantity
+      quantity: item.quantity,
     }));
 
     line_items.push({
-      price_data:{
-        currency:"inr",
-        product_data:{
-          name:"Delivery Charge"
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: "Delivery Charge",
         },
-        unit_amount: Math.round(deliveryCharge * 100)
+        unit_amount: Math.round(deliveryCharge * 100),
       },
-      quantity: 1
-    })
+      quantity: 1,
+    });
 
     const session = await stripe.checkout.sessions.create({
       line_items: line_items,
       mode: "payment",
       success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
-      cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`
-    })
-    res.json({success: true, session_url: session.url})
+      cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
+    });
+    res.json({ success: true, session_url: session.url });
   } catch (error) {
     console.log(error);
-    res.json({success:false, message: "Error"});
-    
+    res.json({ success: false, message: "Error" });
   }
 };
 
-module.exports = { placeOrder };
+const verifyOrder = async (req, res) => {
+  const { orderId, success } = req.body;
+  try {
+    if (success == "true") {
+      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      res.json({ success: true, message: "payment successful" });
+    } else {
+      await orderModel.findByIdAndDelete(orderId);
+      res.json({ success: false, message: "payment failed" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
+
+const userOrder = async (req, res) => {
+  try {
+    const orders = await orderModel.find({ userId: req.body.userId });
+    res.json({ success: true, data: orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
+
+module.exports = { placeOrder, verifyOrder, userOrder };
