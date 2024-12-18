@@ -28,6 +28,11 @@
     background-color: #fff0ed;
 }
 
+.sidebar-option .update{
+    width: 30px;
+    height: 30px;
+}
+
 @media (max-width:900px) {
     .sidebar-option p{
         display: none;
