@@ -80,4 +80,24 @@ const userOrder = async (req, res) => {
   }
 };
 
-module.exports = { placeOrder, verifyOrder, userOrder };
+const listOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    res.json({ success: true, data: orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
+
+const updateOrderStatus = async (req, res) => {
+  try {
+    await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
+    res.json({success: true, message:"Order Status updated"})
+  } catch (error) {
+    console.log(error);
+    res.json({success: false, message: "Error" });
+  }
+};
+
+module.exports = { placeOrder, verifyOrder, userOrder, listOrders, updateOrderStatus };
