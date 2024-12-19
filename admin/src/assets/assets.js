@@ -1,6 +1,6 @@
 import logo from './logo.png'
 import deleteButton from './delete.png'
-import update from './update.png'
+import update from './Update.png'
 import Add from './Add.png'
 import add_icon from './add_icon.png'
 import order_icon from './order_icon.png'
