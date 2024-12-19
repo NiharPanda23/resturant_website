@@ -11,5 +11,14 @@
         "src": "/(.*)",
         "dest": "index.js"
       }
-    ]
+    ],
+    "build": {
+      "env": {
+        "NODE_VERSION": "18.x"
+        }
+    },
+    "engines": {
+      "node": ">=18.0.0"
+    },
+    "installCommand": "npm ci"
   }
