@@ -17,6 +17,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 connectDb();
 
+const PORT = 3000
+
 app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
@@ -27,5 +29,5 @@ app.get("/", (req, res) => {
   res.send("Hi there");
 });
 
-app.listen(3000, () => console.log("Listing on port 3000"));
+app.listen(PORT, () => console.log("Listing on port 3000"));
 
