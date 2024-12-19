@@ -17,7 +17,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 connectDb();
 
-const PORT = 3000
+const PORT = 3000;
 
 app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));
