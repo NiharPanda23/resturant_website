@@ -1,13 +1,12 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const password = process.env.DB_PASSWORD;
-const id = process.env.DB_ID;
-const db = process.env.DB_NAME;
+const MONGO_URI = process.env.MONGO_URI;
+
 
 const connectDb = async () => {
     try {
-        await mongoose.connect(`mongodb+srv://${id}:${password}@cluster0.55gey.mongodb.net/${db}?retryWrites=true&w=majority`);
+        await mongoose.connect(MONGO_URI); //mongodb+srv://${id}:${password}@cluster0.55gey.mongodb.net/${db}?retryWrites=true&w=majority
     } catch (error) {
         console.log("Connection error:", error);
     }
