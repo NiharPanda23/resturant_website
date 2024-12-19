@@ -92,7 +92,7 @@ const Header = () => {
       <div className="header-content">
         <h2>{slides[currentSlide].title}</h2>
         <p>{slides[currentSlide].description}</p>
-        <button>View Menu</button>
+        <button><a href="#explore-menu">View Menu</a></button>
       </div>
     </div>
   );

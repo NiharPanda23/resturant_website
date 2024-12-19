@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const PlaceOrder = () => {
@@ -53,6 +53,17 @@ const PlaceOrder = () => {
       alert("Error");
     }
   }
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(!token){
+      navigate("/cart");
+    }else if(getTotalCartAmount() === 0){
+        navigate('/cart');
+    }
+  }, [token])
+  
 
 
   return (

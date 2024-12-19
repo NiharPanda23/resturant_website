@@ -17,6 +17,7 @@ const Navbar = ({ setShowLogin }) => {
     navigate("/");
   };
 
+
   const handelActiveStatus = (e) => {
     setMenu(e.target.textContent);
   };
@@ -86,7 +87,7 @@ const Navbar = ({ setShowLogin }) => {
                 <p>Profile</p>
               </li>
               <hr />
-              <li>
+              <li onClick={()=>navigate('/myorders')}>
                 <img src={assets.bag_icon} alt="bag icon" />
                 <p>Orders</p>
               </li>
