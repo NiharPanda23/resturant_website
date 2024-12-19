@@ -9,7 +9,12 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: [process.env.URL_1, process.env.URL_2]
+}
+
+app.use(cors(corsOptions));
 connectDb();
 
 app.use("/api/food", foodRouter);
