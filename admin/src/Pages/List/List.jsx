@@ -55,7 +55,7 @@ const List = ({ url }) => {
           return (
             <div key={food._id} className="list-table-format">
               <img
-                src={`http://localhost:3000/images/` + food.image}
+                src={`${url}images/` + food.image}
                 alt={food.name}
               />
               <p>{food.name}</p>
