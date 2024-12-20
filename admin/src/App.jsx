@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
 
-  const url = import.meta.env.VITE_URL
+  const url = "https://resturant-website-server.onrender.com"
 
   return (
     <div>
