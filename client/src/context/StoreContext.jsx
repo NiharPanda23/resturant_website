@@ -4,7 +4,7 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const url = import.meta.env.VITE_URL;
+  const url = "https://resturant-website-server.onrender.com";
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [food_list, setFood_list] = useState([]);
