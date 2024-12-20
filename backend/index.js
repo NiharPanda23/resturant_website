@@ -10,7 +10,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 const corsOptions = {
-  origin: [process.env.URL_1, process.env.URL_2]
+  origin: [process.env.URL_1, process.env.URL_2, process.env.URL_3]
 }
 app.use(cors(corsOptions));
 connectDb();
